@@ -1,0 +1,71 @@
+---
+title: "Random Selection in R"
+author: "Mohamed Mustaf"
+date: "2024-04-10"
+---
+
+## Random Selection of Hospitals for a Survey
+
+### Loading the dataset
+
+```{r}
+# loading the necessary libraries
+library(readxl)
+library(dplyr)
+library(writexl)
+```
+
+```{r}
+# reading the Excel file
+hospitals <- read_excel("Hospital_List_Mogadishu.xlsx")
+```
+
+### Checking the dataset
+
+```{r}
+# displaying the first few rows of the data
+head(hospitals)
+```
+```{r}
+# checking how many rows and columns are in the data
+dim(hospitals)
+```
+
+```{r}
+# checking how many hospitals are private and how many are public
+table(hospitals$Type)
+```
+
+## Randomly Selecting Hospitals
+
+The dataset contains the names of 69 hospitals. We will randomly select 15 hospitals from the dataset.
+
+```{r}
+# filtering for hospitals that are ready for surgery ('Yes' in 'Surgery_Ready')
+surgery_ready_hospitals <- hospitals %>%
+  filter(Surgery_Ready == "Yes")
+
+# making sure we set a seed for reproducibility
+set.seed(123) # This can be any number we choose
+
+# randomly selecting 15 hospitals from the filtered list of surgery-ready hospitals
+selected_hospitals <- sample_n(surgery_ready_hospitals, size = 15)
+
+# displaying the selected hospitals
+selected_hospitals
+```
+Let's save the selected hospitals to an Excel file.
+
+```{r}
+# writing the selected hospitals to an Excel file
+write_xlsx(selected_hospitals, "Selected_Hospitals.xlsx")
+```
+
+
+## Conclusion
+
+In this analysis, we randomly selected 15 hospitals from a dataset of hospitals in Mogadishu. This random selection process ensures that the sample is representative and unbiased, allowing us to conduct a survey on surgery readiness in the selected hospitals. The selected hospitals have been saved to an Excel file for further analysis.
+
+### Note on the Seed Value
+
+Using "123" as the seed value in `set.seed(123)` is just an example; any number can work as a seed. This seed ensures that any random process, like selecting samples or dividing data, can be repeated exactly, making the work clear and repeatable for anyone. While the specific seed number isn't crucial, using and stating one consistently is key for others to replicate your work. The use of "123" is common in examples to illustrate how to achieve consistent, reproducible results in statistical work.
